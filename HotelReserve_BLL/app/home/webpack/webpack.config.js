@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     //指定入口文件，程序从这里开始编译,__dirname当前所在目录, ../表示上一级目录, ./同级目录
     entry: [
+        'babel-polyfill',//解决热更新组件状态保存问题
+        'react-hot-loader/patch',//解决热更新组件状态保存问题
         'webpack-dev-server/client?http://localhost:9090',
         'webpack/hot/only-dev-server',
         path.resolve(__dirname, '../src/index.js')
