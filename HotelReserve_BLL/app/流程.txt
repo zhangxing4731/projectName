@@ -1,1 +1,1 @@
-create-react-app my-react-app（项目名称）
+npm init创建项目
