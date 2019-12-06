@@ -1,0 +1,111 @@
+﻿@model HotelReserveManage.Models.RoomViewModel
+<style>
+    .addroom {
+        width:300px;
+    }
+    .form-group {
+        margin-bottom:20px;
+    }
+    #addroom {
+        width: 150px;
+        float: right;
+        margin-top: 8px;
+    }
+    #myform {
+        position: absolute;
+        margin-left: 120px;
+        margin-top: 20px;
+    }
+    .ys-one {
+        height: 38px;
+    }
+    .fa {
+        color: #5bc0de;
+    }
+</style>
+<script>
+    function beforeSubmit() {
+
+        //密码为八位及以上并且字母数字特殊字符三项都包括
+        var RoomNumber = $('#RoomNumber')
+        var RoomType = $('#RoomType');
+        var RoomPrice = $('#RoomPrice');
+        if (RoomNumber.val() == "") {
+            layer.alert('请输入房间号', { icon: 1, skin: 'layer-ext-moon' });
+            RoomNumber.focus();
+            return false;
+        }
+        if (RoomType.val() == "") {
+            layer.alert('请选择房间类型', { icon: 2, skin: 'layer-ext-moon' });
+            RoomType.focus();
+            return false;
+        }
+        if (RoomPrice.val() == "") {
+            layer.alert('请输入房间价格', { icon: 2, skin: 'layer-ext-moon' });
+            RoomPrice.focus();
+            return false
+
+        }
+        return true;
+    }
+</script>
+<form id="myform">
+@using (Html.BeginForm("Addroom", "RoomManage", FormMethod.Post, new { onsubmit = "return beforeSubmit()" }))
+{
+<div class="addroom">
+    <div class="form-group box-two">
+        <div class="input-group">
+            <div class="input-group-addon ys-one"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+            <input id="RoomNumber" name="RoomNumber" type="text" class="form-control ys-one" placeholder="请输入房间号">
+        </div>
+    </div>
+    <div class="form-group">
+        <select id="RoomType" name="RoomType" class="form-control ys-one">
+            <option>请选择房间类型</option>
+            <option>单人间</option>
+            <option>双人间</option>
+            <option>标准间</option>
+            <option>豪华间</option>
+            <option>套间</option>
+        </select>
+    </div>
+    <div class="form-group box-two">
+        <div class="input-group">
+            <div class="input-group-addon ys-one"><i class="fa fa-jpy" aria-hidden="true"></i></div>
+            <input id="RoomPrice" name="RoomPrice" type="text" class="form-control ys-one" placeholder="请输入房间价格">
+        </div>
+    </div>
+    <button id="addroom" type="button" class="btn btn-info" onclick="Addroom()">确定</button>
+</div>
+}
+</form>
+<script>
+    function Addroom() {
+        $.ajax(
+            {
+                cache: false,
+                type: "POST",
+                url: "/RoomManage/Addroom",
+                dataType: "json",
+                data: $('#myform').serializeArray(),//序列化表单
+                async: true,
+                error: function (request) {
+                    self.parent.layer.msg("添加失败", { time: 3000 });
+                },
+                beforeSend: function () {
+                    return beforeSubmit();
+                },
+                complete: function () {
+                    self.parent.layer.closeAll('loading');
+                },
+                success: function (data) {
+                    if (data.Status) {
+                        self.parent.layer.msg("添加成功", { time: 3000 });
+                    } else {
+                        layer.alert(data.Message, { icon: 2, skin: 'layer-ext-moon' });
+                    }
+
+                }
+            });
+    }
+</script>

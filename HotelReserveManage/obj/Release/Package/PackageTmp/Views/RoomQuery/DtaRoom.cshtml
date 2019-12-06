@@ -1,0 +1,63 @@
+﻿@model List<HotelReserve_Model.T_Room>
+<style>
+    div {
+    }
+
+    .reserve-query {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        right: 20px;
+        height: 60px;
+        border: 1px solid #797979;
+    }
+
+    .reserve-table {
+        position: absolute;
+        top: 92px;
+        left: 20px;
+        right: 20px;
+        bottom: 5px;
+        border: 1px solid #797979;
+    }
+
+    select.form-control {
+        width: 200px;
+        margin-top: 13px;
+        margin-left: 2px;
+    }
+
+    .btn-query {
+        position: absolute;
+        margin-left: 204px;
+        margin-top: -50px;
+    }
+
+    .ReserveClass {
+    }
+</style>
+<form id="myform">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model[0].RoomId)</th>
+                <th>@Html.DisplayNameFor(model => model[0].RoomNumber)</th>
+                <th>@Html.DisplayNameFor(model => model[0].RoomType)</th>
+                <th>@Html.DisplayNameFor(model => model[0].RoomPrice)</th>
+                <th>@Html.DisplayNameFor(model => model[0].State)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => model[i].RoomId)</td>
+                    <td>@Html.DisplayFor(model => model[i].RoomNumber)</td>
+                    <td>@Html.DisplayFor(model => model[i].RoomType)</td>
+                    <td>@Html.DisplayFor(model => model[i].RoomPrice)</td>
+                    <td>@Html.DisplayFor(model => model[i].State)</td>                   
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>

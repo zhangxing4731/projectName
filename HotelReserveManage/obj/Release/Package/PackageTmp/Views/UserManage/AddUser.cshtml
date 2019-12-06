@@ -1,0 +1,123 @@
+﻿@model HotelReserveManage.Models.UserDataViewModel
+<style>
+    html {
+        width: 100%;
+        height: 100%;
+    }
+
+    .box-one {
+        width: 320px;
+        height: 260px;
+        position: absolute;
+        top: 10%;
+        background-color: rgba(255,255,255,0.5);
+        border-radius: 10px;
+    }
+
+    .box-two {
+        margin-left: 40px;
+        margin-top: 20px;
+        margin-right: 40px;
+        border-radius: 30px;
+    }
+
+    .btn-one {
+        margin-left: 40px;
+        margin-right: 40px;
+        width: 238px;
+        font-size: 16px;
+        font-family: 楷体;
+        border-radius: 10px;
+    }
+
+    .body_blank {
+        background-image: url(image/bg_2.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    #btn-one {
+        margin-top: 10px;
+    }
+
+    .user-read {
+        height: 52px;
+        margin-left: 40px;
+        width: 238px;
+        font-size: 12px;
+    }
+
+    .ys-one {
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .title-one {
+        position: absolute;
+        left: 38%;
+        margin-top: 60px;
+        font-size: 3em;
+        font-weight: 700;
+        text-align: center;
+        width: 320px;
+        font-family: 楷体;
+        color: #FFF;
+    }
+
+    span {
+        color: #5bc0de;
+    }
+</style>
+<form id="myform">
+    <div class="box-one">
+        <div class="form-group box-two">
+            <div class="input-group">
+                <div class="input-group-addon ys-one"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+                @Html.TextBoxFor(x => x.UserName, new { @class = "form-control ys-one",placeholder = "请输入6位以上账号" })
+            </div>
+        </div>
+        <div class="form-group box-two">
+            <div class="input-group">
+                <div class="input-group-addon ys-one"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control ys-one", placeholder = "请输入姓名" })
+            </div>
+        </div>
+        <div class="form-group box-two">
+            <div class="input-group">
+                <div class="input-group-addon ys-one"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span></div>
+                @Html.TextBoxFor(x => x.IdCard, new { @class = "form-control ys-one", placeholder = "请输入身份证号" })
+            </div>
+        </div>
+        <button type="button" class="btn-one btn btn-info" id="btn-one" onclick="Edit()">确定</button>
+    </div>
+</form>
+<script>
+    function Edit()
+    {
+        $.ajax(
+            {
+                cache: false,
+                type: "POST",
+                url: "/UserManage/AddUser",
+                dataType: "json",
+                data: $('#myform').serializeArray(),//序列化表单
+                async: true,
+                error: function (request) {
+                    setTimeout("location.reload()", 3000);
+                    layer.alert('添加失败', { icon: 2, skin: 'layer-ext-moon' });
+                },
+                complete: function () {
+                    self.parent.layer.closeAll('loading');
+                },
+                success: function (data) {
+                    if (data.Status) {
+                        setTimeout("location.reload()", 3000);
+                        layer.alert('添加成功', { icon: 1, skin: 'layer-ext-moon' });
+                    } else {
+                        layer.alert(data.Message, { icon: 2, skin: 'layer-ext-moon' });
+                    }
+
+                }
+            });
+    }
+</script>

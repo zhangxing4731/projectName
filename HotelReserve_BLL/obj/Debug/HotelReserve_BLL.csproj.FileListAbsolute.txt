@@ -1,0 +1,11 @@
+D:\Graduation\HotelReserve\HotelReserve_BLL\bin\Debug\HotelReserve_BLL.dll
+D:\Graduation\HotelReserve\HotelReserve_BLL\bin\Debug\HotelReserve_BLL.pdb
+D:\Graduation\HotelReserve\HotelReserve_BLL\bin\Debug\HotelReserve_DAL.dll
+D:\Graduation\HotelReserve\HotelReserve_BLL\bin\Debug\HotelReserve_Model.dll
+D:\Graduation\HotelReserve\HotelReserve_BLL\bin\Debug\HotelReserve_DAL.pdb
+D:\Graduation\HotelReserve\HotelReserve_BLL\bin\Debug\HotelReserve_Model.pdb
+D:\Graduation\HotelReserve\HotelReserve_BLL\obj\Debug\HotelReserve_BLL.csproj.CoreCompileInputs.cache
+D:\Graduation\HotelReserve\HotelReserve_BLL\obj\Debug\HotelReserve_BLL.dll
+D:\Graduation\HotelReserve\HotelReserve_BLL\obj\Debug\HotelReserve_BLL.pdb
+D:\Graduation\HotelReserve\HotelReserve_BLL\obj\Debug\HotelReserve_BLL.csprojAssemblyReference.cache
+D:\Graduation\HotelReserve\HotelReserve_BLL\obj\Debug\HotelReserve_BLL.csproj.CopyComplete

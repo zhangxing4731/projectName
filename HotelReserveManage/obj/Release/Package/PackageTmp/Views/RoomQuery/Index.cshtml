@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.title = "房间查询";
+}
+<style>
+    .AddRoomMange {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        height: 60px;
+    }
+
+    .RoomMange {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        top: 62px;
+        bottom: 5px;
+        border: 1px solid #797979;
+    }
+    .reserve-query {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        right: 20px;
+        height: 60px;
+        border: 1px solid #797979;
+    }
+
+    .reserve-table {
+        position: absolute;
+        top: 92px;
+        left: 20px;
+        right: 20px;
+        bottom: 5px;
+        border: 1px solid #797979;
+    }
+
+    select.form-control {
+        width: 200px;
+        margin-top: 13px;
+        margin-left: 2px;
+    }
+
+    .btn-query {
+        position: absolute;
+        margin-left: 204px;
+        margin-top: -50px;
+    }
+
+    .ReserveClass {
+    }
+
+    #addrooma {
+        position: absolute;
+        margin-left: 264px;
+        margin-top: -50px;
+    }
+</style>
+<form id="searchRoom">
+    <div class="AddRoomMange">
+        <div class="form-group">
+            <select id="select" class="form-control">
+                <option value="请选择房间类型">请选择房间类型</option>
+                <option value="单人间">单人间</option>
+                <option value="双人间">双人间</option>
+                <option value="标准间">标准间</option>
+                <option value="豪华间">豪华间</option>
+                <option value="套间">套间</option>
+            </select>
+        </div>
+        <button id="RoomBtn" type="button" class="btn btn-info btn-query" onclick="SearchRoom()" value="/RoomQuery/SrarchRoom">查询</button>
+        <button id="addrooma" type="button" class="btn btn-info" onclick="refb()" value="/RoomQuery/DtaRoom"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+    </div>
+</form>
+<div class="RoomMange">
+    <iframe style="overflow: hidden;width:100%;height:100%;border:0" id="RoomQuery" src="/RoomQuery/DtaRoom"></iframe>
+</div>
+<script>
+
+    function SearchRoom() {
+
+        var RoomType = $('#select').val();
+        if (RoomType != "请选择房间类型") {
+            var val = $("#RoomBtn").attr("value");
+            $("#RoomQuery").attr("src", val)
+            $.ajax
+                ({
+                    type: "POST",
+                    url: "/RoomQuery/Srarch",
+                    async: true,
+                    data: { RoomType: RoomType },
+                });
+        }
+        else {
+            parent.alert('请选择查询内容', { icon: 2, skin: 'layer-ext-moon' });
+        }
+    }
+    function refb() {
+        var val = $("#addrooma").attr("value");
+        $("#RoomQuery").attr("src", val)
+    }
+</script>

@@ -1,0 +1,97 @@
+﻿@model List<HotelReserve_Model.T_Room>
+@{
+    ViewBag.title = "预定酒店所有房间信息模块";
+}
+<style>
+    div {
+    }
+
+    .reserve-query {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        right: 20px;
+        height: 60px;
+        border: 1px solid #797979;
+    }
+
+    .reserve-table {
+        position: absolute;
+        top: 92px;
+        left: 20px;
+        right: 20px;
+        bottom: 5px;
+        border: 1px solid #797979;
+    }
+
+    select.form-control {
+        width: 200px;
+        margin-top: 13px;
+        margin-left: 2px;
+    }
+
+    .btn-query {
+        position: absolute;
+        margin-left: 204px;
+        margin-top: -50px;
+    }
+
+    .ReserveClass {
+    }
+</style>
+<form id="myform">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model[0].RoomId)</th>
+                <th>@Html.DisplayNameFor(model => model[0].RoomNumber)</th>
+                <th>@Html.DisplayNameFor(model => model[0].RoomType)</th>
+                <th>@Html.DisplayNameFor(model => model[0].RoomPrice)</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => model[i].RoomId)</td>
+                    <td>@Html.DisplayFor(model => model[i].RoomNumber)</td>
+                    <td>@Html.DisplayFor(model => model[i].RoomType)</td>
+                    <td>@Html.DisplayFor(model => model[i].RoomPrice)</td>                 
+                    <td><button type="button" class="btn btn-info ReserveClass" onclick="MyModel(this)" value="/Reserve/MyReserve">预定</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+<script>
+    $(".ReserveClass").click(function () {
+        var tr = $(this).parent().parent();//获取点击的一行tr
+        var b = tr.children("td");//获取tr的所有td元素
+        var number = b.eq(1);//获取房间号
+        var type = b.eq(2);//获取房间类型
+        var price = b.eq(3);//获取房间价格
+        var roomnumber = number.text();//显示房间号的值
+        var roomtype = type.text();
+        var roomprice = price.text();                      
+            $.ajax
+                ({
+                    type: "POST",
+                    url: "/Reserve/Reserve",
+                    async: true,
+                    data: { RoomNumber: roomnumber, RoomType: roomtype, RoomPrice: roomprice},
+                    success: function (data) {
+                        if (data = "success") {
+                            setTimeout("location.reload()", 3000);
+                            layer.alert('预定成功，如需取消请前往我得预定', { icon: 1, skin: 'layer-ext-moon' });
+                        }
+                    },
+                    error: function (request) {
+                        setTimeout("location.reload()", 3000);
+                        layer.alert('预定失败，请重新操作', { icon: 2, skin: 'layer-ext-moon' });
+                    },
+                });
+               
+    })
+</script>

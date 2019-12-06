@@ -1,0 +1,154 @@
+﻿@model List<HotelReserve_Model.T_User>
+@{
+    ViewBag.title = "用户信息";
+}
+<style>
+    .AddRoomMange {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        height: 60px;
+    }
+
+    body {
+        overflow-y: hidden
+    }
+
+    .RoomMange {
+        position: absolute;
+        left: 12px;
+        right: 20px;
+        top: 12px;
+        bottom: 5px;
+        overflow-y: auto;
+        border: 1px solid #797979;
+    }
+
+    #addroom {
+        position: absolute;
+        margin-top: 10px;
+        right: 2px;
+    }
+
+    #addrooma {
+        position: absolute;
+        right: 90px;
+        margin-top: 10px;
+    }
+
+    .reserveing {
+        color: #ff0000;
+    }
+
+    .reserveed {
+        color: #00ff66;
+    }
+</style>
+<form id="myform">
+    <div class="RoomMange">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model[0].UserId)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].UserName)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].Name)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].IdCard)</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => model[i].UserId)</td>
+                        <td>@Html.DisplayFor(model => model[i].UserName)</td>
+                        <td>@Html.DisplayFor(model => model[i].Name)</td>
+                        <td>@Html.DisplayFor(model => model[i].IdCard)</td>
+                        <td>
+                        <button type="button" class="btn btn-info UpUser" onclick="MyModel(this)" value="/UserManage/UpUserManage">编辑</button>
+                        <button type="button" class="btn btn-info DelRoom" onclick="DelUser(this)">删除</button>
+                        <button type="button" class="btn btn-info DelRoom" onclick="NewPassWord(this)">初始化密码</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+<!--编辑用户开始-->
+<script>
+    $(".UpUser").click(function () {
+        var tr = $(this).parent().parent();//获取点击的一行tr
+        var b = tr.children("td");//获取tr的所有td元素
+        var Id = b.eq(0);//获取房间号       
+        //var username = b.eq(1);
+        //var name = b.eq(2);
+        //var idcard = b.eq(3);
+        var UserId = Id.text();
+        //var UserName = username.text();
+        //var Name = name.text();
+        //var IdCard = idcard.text();
+        $.ajax
+            ({
+                url: "/UserManage/UpUser",
+                async: true,
+                data: { UserId: UserId },              
+            });
+    })
+</script>
+<!--编辑用户结束-->
+<!--删除用户开始-->
+<script>
+    function DelUser(obj)
+    {
+        var tr = $(obj).parent().parent();//获取点击的一行tr
+        var b = tr.children("td");//获取tr的所有td元素
+        var Id = b.eq(0);//获取房间号
+        var UserId = Id.text();
+        $.ajax
+            ({
+                type: "POST",
+                url: "/UserManage/DelUserManage",
+                async: true,
+                data: { UserId: UserId},
+                success: function (data) {
+                    if (data = "success") {
+                        setTimeout("location.reload()", 2000);
+                        layer.alert('删除失败', { icon: 2, skin: 'layer-ext-moon' });
+                    }
+                },
+                error: function (request) {
+                    setTimeout("location.reload()", 2000);
+                    layer.alert('删除成功', { icon: 1, skin: 'layer-ext-moon' });
+                },
+            });
+    }
+</script>
+<!--删除用户结束-->
+<!--初始化密码开始-->
+<script>
+    function NewPassWord(obj) {
+        var tr = $(obj).parent().parent();//获取点击的一行tr
+        var b = tr.children("td");//获取tr的所有td元素
+        var Id = b.eq(0);//获取房间号
+        var UserId = Id.text();
+        $.ajax
+            ({
+                type: "POST",
+                url: "/UserManage/NewPassWord",
+                async: true,
+                data: { UserId: UserId },
+                success: function (data) {
+                    if (data = "success") {
+                        setTimeout("location.reload()", 2000);
+                        layer.alert('密码初始化失败', { icon: 2, skin: 'layer-ext-moon' });
+                    }
+                },
+                error: function (request) {
+                    setTimeout("location.reload()", 2000);
+                    layer.alert('密码初始化成功', { icon: 1, skin: 'layer-ext-moon' });
+                },
+            });
+    }
+</script>
+<!--初始化密码结束-->

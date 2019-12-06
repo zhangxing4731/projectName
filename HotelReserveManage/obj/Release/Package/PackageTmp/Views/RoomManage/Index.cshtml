@@ -1,0 +1,113 @@
+﻿@model List<HotelReserve_Model.T_Room>
+@{
+    ViewBag.title = "房间管理";
+}
+<style>
+    .AddRoomMange {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        height: 60px;
+    }
+    body {
+        overflow-y:hidden
+    }
+    .RoomMange {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        top: 62px;
+        bottom: 5px;
+        overflow-y: auto;
+        border: 1px solid #797979;
+    }
+
+    #addroom {
+        position: absolute;
+        margin-top: 10px;
+        right: 2px;
+    }
+
+    #addrooma {
+        position: absolute;
+        right: 90px;
+        margin-top: 10px;
+    }
+
+    .reserveing {
+        color: #ff0000;
+    }
+
+    .reserveed {
+        color: #00ff66;
+    }
+</style>
+<div class="AddRoomMange">
+    <button id="addrooma" type="button" class="btn btn-info" onclick="ref()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+    <button id="addroom" type="button" class="btn btn-info" onclick="MyModel(this)" value="/RoomManage/AddRoom">新增房间</button>
+</div>
+<form id="myform">
+    <div class="RoomMange">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model[0].RoomId)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].RoomNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].RoomType)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].RoomPrice)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].State)</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => model[i].RoomId)</td>
+                        <td>@Html.DisplayFor(model => model[i].RoomNumber)</td>
+                        <td>@Html.DisplayFor(model => model[i].RoomType)</td>
+                        <td>@Html.DisplayFor(model => model[i].RoomPrice)</td>
+                        <td>@Html.DisplayFor(model => model[i].State)</td>
+                        <td><button type="button" class="btn btn-info DelRoom" onclick="DelRoom(this)">删除房间</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+<script>
+    //刷新当前页
+    function ref()
+    {
+        location.reload();
+    }
+</script>
+<script>
+    function DelRoom(obj) {
+        var tr = $(obj).parent().parent();//获取点击的一行tr
+        var b = tr.children("td");//获取tr的所有td元素
+        var id = b.eq(0);//获取房间号     
+        var Id = id.text();//显示房间号的值       
+        
+            $.ajax
+                ({
+                    type: "POST",
+                    url: "/RoomManage/DelRoom",
+                    async: true,
+                    data: { Id: Id },
+                    success: function (data) {
+                        if (data == "True") {
+                            setTimeout("location.reload()", 3000);                           
+                            layer.alert('删除失败，请重新操作', { icon: 2, skin: 'layer-ext-moon' });
+                        }
+                       
+                    },
+                    error: function (request) {
+                        setTimeout("location.reload()", 3000);
+                        layer.alert('删除成功', { icon: 1, skin: 'layer-ext-moon' });
+                    },
+                });
+                
+
+    }
+</script>

@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewBag.Title = "海石三酒店首页";
+
+}
+<style>
+    .home-head {
+        height: 50px;
+    }
+
+    .home-body {
+        position: absolute;
+        top: 90px;
+        left: 2px;
+        right: 2px;
+        bottom: 25px;
+    }
+
+    .home-bottom {
+        position: absolute;
+        bottom: 0px;
+        left: 2px;
+        right: 2px;
+        height: 24px;
+        font-family: 楷体;
+        background-image: url(/Content/image/bg_3.jpg);
+    }
+    .navbar-default {
+        background-image:url(/Content/image/bg_3.jpg)
+    }
+    #head-title {
+        font-size: 2em;
+        font-family: 微软雅黑;
+    }
+
+    .navbar-default .navbar-brand {
+        color: #FFF;
+    }
+
+    .navbar-default .navbar-nav > li > a {
+        color: #FFF;
+    }
+
+    .biaoqian {
+        position: absolute;
+        top: 51px;
+        height: 18px;
+        left: 2px;
+        right: 2px;
+    }
+
+    .mytab {
+        list-style: none;
+        width: 100px;
+        background-color: #0FF;
+    }
+    #wecome {
+        float: right;
+        font-family: 楷体
+    }
+    .modal-body {
+        height:360px;
+    }
+    .text-bottom {
+        position:absolute;
+        color:white;
+        left:280px;
+    }
+</style>
+<div class="home-head">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header" id="head-title">
+                <a class="navbar-brand" href="/Home/Index">海石三酒店</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            酒店预定
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li onclick="Tab(this)" value="/Reserve/Index"><a>预订酒店</a></li>
+                            <li onclick="Tab(this)" value="/ReserveRecord/Index"><a>我的预定</a></li>                         
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            个人管理
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li onclick="Tab(this)" value="/UserInfo/Index"><a>个人资料</a></li>
+                        </ul>
+                    </li>                 
+                </ul>
+            </div>
+            <div class="navbar-header" id="wecome">
+                <a class="navbar-brand" href="@Url.Action("Index","Login")">欢迎：@Session["UserName"]</a>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="biaoqian">
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active">
+            <a href="#Date" data-toggle="tab"> 首页</a>
+        </li>
+    </ul>
+</div>
+<div class="home-body">
+    <iframe style="overflow: hidden;width:100%;height:100%;border:0" id="middle" src="/Home/Date"></iframe>
+</div>
+<!-- 全局模态框（Modal） -->
+<div style="position:absolute;top:80px;" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="ModelTitile">
+                    这里是模态框的头部
+                </h4>
+            </div>
+            <div class="modal-body" id="ModelBody">
+                <iframe style="overflow: hidden;width:100%;height:100%;border:0" id="ModelIframe" src="/Home/Date"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div  class="home-bottom"><div class="text-bottom">欢迎光临海石三酒店</div></div>
+<!-- 配置页签开始 -->
+<script type="text/javascript">
+    function Tab(obj) {
+        var val = $(obj).attr("value");
+        var Test = $(obj).text();
+        var AddHtml = "<li class='active'> <a href='#home' data-toggle='tab'>" + Test + "</a></li>";
+        $("#myTab").html(AddHtml)
+        $("#middle").attr("src", val)
+    }
+</script>
+<!-- 配置页签结束 -->
+<!-- 配置模态框（Modal）开始 -->
+<script>
+
+    function showModel(Title, obj) {
+
+        var Value = $(obj).attr("value");
+
+        $("#ModelTitile").html(Title)                //配置模态框的头部
+
+        $("#ModelIframe").attr("src", Value)         //配置模态框的body
+
+        $('#myModal').modal({
+            keyboard: false,                         //按下 escape 键时关闭模态框，设置为 false 时则按键无效。
+            backdrop: "static",                      //点击模态框外部 模态框不关闭
+
+            show: true                               //打开 模态框
+        })
+    }
+</script>
+<!-- 模态框（Modal）结束 -->
+<script>
+    for (var i = 0; i < 1000; i++) {
+    $(function () {
+        $(".text-bottom").animate({ left: "900px" }, 40000).animate({ left: "280px" }, 40000)
+        })
+    }  
+</script>

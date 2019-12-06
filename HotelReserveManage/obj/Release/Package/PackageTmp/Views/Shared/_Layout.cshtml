@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link type="text/css" href="~/Scripts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/layer/layer.js"></script>
+    <title>@ViewBag.Title海石三酒店管理员系统</title>
+    <!--给主页面传递数据 配置模态框开始-->
+    <script>
+        function MyModel(obj) {
+            var Title = $(document).attr("title") + $(obj).text();
+            self.parent.showModel(Title, obj)
+        }
+        function Delete() {
+            parent.layer.confirm('确定删除所选内容？', {
+                btn: ['取消', '确定'] //按钮
+            }, function () {
+                parent.layer.msg('取消成功', { icon: 1 });
+            }, function () {
+                parent.layer.msg('删除成功', {
+                    icon: 1, time: 20000, //20s后自动关闭
+                });
+            });
+        }
+    </script>
+    <!--给主页面传递数据 配置模态框开始-->
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>

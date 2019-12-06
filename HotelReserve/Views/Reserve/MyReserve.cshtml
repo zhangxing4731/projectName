@@ -1,0 +1,186 @@
+﻿@model HotelReserve.Models.RoomReserveViewModel
+@{
+    ViewBag.title = "预定酒店预定模块";
+}
+<link href="~/Scripts/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+<style>
+    html {
+        width: 100%;
+        height: 100%;
+    }
+
+    .box-one {
+        width: 320px;
+        position: absolute;
+        background-color: rgba(255,255,255,0.5);
+        border-radius: 10px;
+    }
+
+    .box-two {
+        margin-left: 40px;
+        margin-top: 10px;
+        margin-right: 40px;
+        border-radius: 30px;
+    }
+
+    .btn-one {
+        margin-left: 40px;
+        margin-right: 40px;
+        width: 238px;
+        font-size: 16px;
+        font-family: 楷体;
+        border-radius: 10px;
+    }
+
+    .body_blank {
+        background-image: url(image/bg_2.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    #btn-one {
+        margin-top: 10px;
+    }
+
+    .user-read {
+        height: 52px;
+        margin-left: 40px;
+        width: 238px;
+        font-size: 12px;
+    }
+
+    .ys-one {
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .title-one {
+        position: absolute;
+        left: 38%;
+        margin-top: 60px;
+        font-size: 3em;
+        font-weight: 700;
+        text-align: center;
+        width: 320px;
+        font-family: 楷体;
+        color: #FFF;
+    }
+
+    span {
+        color: #5bc0de;
+    }
+</style>
+<script>
+    function beforeSubmit() {
+        var RoomStart = $('#RoomStart')
+        var RoomEnd = $('#RoomEnd');       
+        if (RoomStart.val() == "") {
+            layer.alert('请选择入住时间', { icon: 1, skin: 'layer-ext-moon' });
+            RoomStart.focus();
+            return false;
+        }
+        if (RoomEnd.val() == "") {
+            layer.alert('请选择退房时间', { icon: 2, skin: 'layer-ext-moon' });
+            RoomEnd.focus();
+            return false;
+        }
+        if (RoomEnd.val() < RoomStart.val())
+        {
+            layer.alert('请确定时间的合理性', { icon: 2, skin: 'layer-ext-moon' });
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<form id="myform">
+@using (Html.BeginForm("Index", "Register", FormMethod.Post, new { onsubmit = "return beforeSubmit()" }))
+{
+    <div class="box-one">
+        <div class="form-group box-two">
+            <div class="input-group">
+                <div class="input-group-addon ys-one"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+                @Html.TextBoxFor(x => x.RoomNumber, new { @class = "form-control ys-one" })
+            </div>
+        </div>
+        <div class="form-group box-two">
+            <div class="input-group">
+                <div class="input-group-addon ys-one"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+                @Html.TextBoxFor(x => x.RoomType, new { @class = "form-control ys-one" })
+            </div>
+        </div>
+        <div class="form-group box-two">
+            <div class="input-group">
+                <div class="input-group-addon ys-one"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span></div>
+                @Html.TextBoxFor(x => x.RoomPrice, new { @class = "form-control ys-one" })
+            </div>
+        </div>
+        <div class="form-group box-two">
+            <div class="input-group">
+                <div class="input-group-addon ys-one"><span class="fa fa-calendar-times-o" aria-hidden="true"></span></div>
+                <input id="RoomStart" name="RoomStart" class="RoomStart form-control ys-one" type="text" placeholder="请选择入住日期">
+            </div>
+        </div>
+        <div class="form-group box-two">
+            <div class="input-group">
+                <div class="input-group-addon ys-one"><span class="fa fa-calendar-times-o" aria-hidden="true"></span></div>
+                <input id="RoomEnd" name="RoomEnd" class="RoomEnd form-control ys-one" type="text" placeholder="请选择退房日期">
+            </div>
+        </div>
+        <button type="button" class="btn-one btn btn-info" id="btn-one" onclick="Edit()">确定</button>
+    </div>
+}
+</form>
+<script>
+        $('.RoomStart').datetimepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd',
+            minView: "day",//设置只显示到月份
+            todayHighlight: true,//今天高亮
+            language: 'zh-CN',
+        });
+        $('.RoomEnd').datetimepicker(
+            {
+                autoclose: true,
+                todayHighlight: true,
+                format: 'yyyy-mm-dd',
+                minView: "day",//设置只显示到月份
+                todayHighlight: true,//今天高亮
+                language: 'zh-CN',
+            }
+        );
+    </script>
+<script>
+        function Edit() {
+            $.ajax(
+                {
+                    cache: false,
+                    type: "POST",
+                    url: "/Reserve/AddReserve",
+                    dataType: "json",
+                    data: $('#myform').serializeArray(),//序列化表单
+                    async: true,
+                    error: function (request) {
+                        setTimeout("location.reload()", 3000);
+                        layer.alert('预定成功,如果需要取消本次预定请前往“我的预定”', { icon: 1, skin: 'layer-ext-moon' });
+                    },
+                    complete: function () {
+                        self.parent.layer.closeAll('loading');
+                    },
+                    beforeSend: function () {
+                        return beforeSubmit();
+                    },
+                    success: function (data) {
+                        if (data.Status) {
+                            setTimeout("location.reload()", 3000);
+                            layer.alert('预订失败,请重新操作', { icon: 2, skin: 'layer-ext-moon' });
+                        } else {
+                            layer.alert(data.Message, { icon: 2, skin: 'layer-ext-moon' });
+                        }
+
+                    }
+                });
+        }
+</script>

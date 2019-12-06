@@ -1,0 +1,108 @@
+﻿@model HotelReserve.Models.UserDataViewModel
+@{
+    ViewBag.title = "个人资料";
+}
+<style>
+    html {
+        width: 100%;
+        height: 100%;
+    }
+
+    .box-one {
+        width: 320px;
+        height: 320px;
+        position: absolute;
+        left: 38%;
+        top: 10%;
+        background-color: rgba(255,255,255,0.5);
+        border-radius: 10px;
+        border:1px solid #797979
+    }
+
+    .box-two {
+        margin-left: 40px;
+        margin-top: 20px;
+        margin-right: 40px;
+        border-radius: 30px;
+    }
+
+    .btn-one {
+        margin-left: 40px;
+        margin-right: 40px;
+        width: 238px;
+        font-size: 16px;
+        font-family: 楷体;
+        border-radius: 10px;
+    }
+
+    .body_blank {
+        background-image: url(image/bg_2.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    #btn-one {
+        margin-top: 10px;
+    }
+
+    .user-read {
+        height: 52px;
+        margin-left: 40px;
+        width: 238px;
+        font-size: 12px;
+    }
+
+    .ys-one {
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .title-one {
+        position: absolute;
+        left: 38%;
+        margin-top: 60px;
+        font-size: 3em;
+        font-weight: 700;
+        text-align: center;
+        width: 320px;
+        font-family: 楷体;
+        color: #FFF;
+    }
+    span {
+        color: #5bc0de;
+    }
+</style>
+<div class="box-one">
+    <div class="form-group box-two">
+        <div class="input-group">
+            <div class="input-group-addon ys-one"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+            @Html.TextBoxFor(x => x.UserName, new { @class = "form-control ys-one", @readonly = "readonly", @name = "Name" })
+        </div>
+    </div>
+    <div class="form-group box-two">
+        <div class="input-group">
+            <div class="input-group-addon ys-one"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control ys-one", @readonly = "readonly"})
+        </div>
+    </div>
+    <div class="form-group box-two">
+        <div class="input-group">
+            <div class="input-group-addon ys-one"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span></div>
+            @Html.TextBoxFor(x => x.IdCard, new { @class = "form-control ys-one", @readonly = "readonly"})
+        </div>
+    </div>
+    <button type="button" class="btn-one btn btn-info" id="btn-one" onclick="MyModel(this)" value="/UserInfo/Edit">编辑资料</button>
+    <button type="button" class="btn-one btn btn-info" id="btn-one" onclick="ref()" value="/UserInfo/Edit">刷新页面</button>
+</div>
+<script>
+    function MyModel(obj) {
+        var Title = $(document).attr("title") + $(obj).text();
+        self.parent.showModel(Title, obj);
+    }
+</script>
+<script>
+    //刷新当前页
+    function ref() {
+        location.reload();
+    }
+</script>

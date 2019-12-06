@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.title = "用户管理";
+}
+<style>
+    .reserve-query {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        right: 20px;
+        height: 60px;
+    }
+    .reserve-table {
+        position: absolute;
+        top: 92px;
+        left: 10px;
+        right: 10px;
+        bottom: 5px;
+    }
+
+    #search{
+        width: 200px;
+        margin-top: 13px;
+        margin-left: 2px;
+    }
+
+    .btn-query {
+        position: absolute;
+        margin-left: 204px;
+        margin-top: -50px;
+    }
+    #addrooma {
+        position: absolute;
+        margin-left: 350px;
+        margin-top: -50px;
+    }
+    #adduser {
+        position: absolute;
+        margin-left: 264px;
+        margin-top: -50px;
+    }
+</style>
+<form id="searchRoom">
+    <div id="searchId" class="reserve-query">
+        <div class="form-group">
+            <input id="search" class="form-control" type="text" placeholder="请输入您要查询的用户号"/>
+        </div>
+        <button id="searchBtn" type="button" class="btn btn-info btn-query" onclick="SearchUser()" value="/UserManage/SerchUserManage">查询</button>
+        <button id="adduser" type="button" class="btn btn-info" onclick="MyModel(this)" value="/UserManage/AddUser">添加用户</button>
+        <button id="addrooma" type="button" class="btn btn-info" onclick="refb()" value="/UserManage/DtaUserManage"><i class="fa fa-refresh" aria-hidden="true"></i></button>       
+    </div>
+</form>
+<div id="div_person_data" class="reserve-table">
+    <iframe style="overflow: hidden;width:100%;height:100%;border:0" id="middel" src="/UserManage/DtaUserManage"></iframe>
+</div>
+<!-- 全局模态框（Modal） -->
+<div style="position:absolute;top:80px;" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="ModelTitile">
+                    这里是模态框的头部
+                </h4>
+            </div>
+            <div class="modal-body" id="ModelBody">
+                <iframe style="overflow: hidden;width:100%;height:100%;border:0" id="ModelIframe" src="/Home/Date"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<!-- 配置模态框（Modal）开始 -->
+<script>
+
+    function showModel(Title, obj) {
+
+        var Value = $(obj).attr("value");
+
+        $("#ModelTitile").html(Title)                //配置模态框的头部
+
+        $("#ModelIframe").attr("src", Value)         //配置模态框的body
+
+        $('#myModal').modal({
+            keyboard: false,                         //按下 escape 键时关闭模态框，设置为 false 时则按键无效。
+            backdrop: "static",                      //点击模态框外部 模态框不关闭
+
+            show: true                               //打开 模态框
+        })
+    }
+</script>
+<!-- 模态框（Modal）结束 -->
+<script>
+
+    function SearchUser() {
+        var UserSerch = $('#search').val();
+        if (UserSerch != "") {
+            var val = $("#searchBtn").attr("value");
+            $("#middel").attr("src", val)
+            $.ajax
+                ({
+                    type: "POST",
+                    url: "/UserManage/Search",
+                    async: true,
+                    data: { UserSerch: UserSerch },
+                    success: function (request) {  
+                        setTimeout("location.reload()", 1000);
+                        layer.alert('查询失败，请输入正确的用户账号', { icon: 2, skin: 'layer-ext-moon' });
+                    },
+                });
+        }
+        else {
+            layer.alert('请输入您要查询的用户账号', { icon: 2, skin: 'layer-ext-moon' });
+        }
+    }
+    function refb() {
+        var val = $("#addrooma").attr("value");
+        $("#middel").attr("src", val)
+    }
+</script>

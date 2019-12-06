@@ -1,0 +1,82 @@
+﻿@model List<HotelReserve_Model.T_Reserve>
+@{
+    ViewBag.title = "我的预定";
+}
+<style>
+    .box-my {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        right: 20px;
+        bottom: 5px;
+        border:1px solid #797979;
+        overflow-y:auto;
+    }
+
+    .stateing {
+        color: #00ff66;
+    }
+
+    .stateed {
+        color: #ff0000;
+    }
+    body {
+        overflow:hidden;
+    }
+</style>
+    <div class="box-my">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model[0].Id)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].RoomNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].RoomType)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].RoomPrice)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].RoomStart)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].RoomEnd)</th>
+                    <th>@Html.DisplayNameFor(model => model[0].State)</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+            {
+                    <tr>
+                        <td>@Html.DisplayFor(model => model[i].Id)</td>
+                        <td>@Html.DisplayFor(model => model[i].RoomNumber)</td>
+                        <td>@Html.DisplayFor(model => model[i].RoomType)</td>
+                        <td>@Html.DisplayFor(model => model[i].RoomPrice)</td>
+                        <td>@Html.DisplayFor(model => model[i].RoomStart)</td>
+                        <td>@Html.DisplayFor(model => model[i].RoomEnd)</td>
+                        <td>@Html.DisplayFor(model => model[i].State)</td>
+                        <td><button type="button" class="btn btn-info ReserveClass" onclick="DelReserve(this)">取消预定</button></td>
+                    </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+<script>
+    function DelReserve(obj) {
+        var tr = $(obj).parent().parent();//获取点击的一行tr
+        var b = tr.children("td");//获取tr的所有td元素
+        var roomnumber = b.eq(1);//获取订单号
+        var RoomNumber = roomnumber.text();//显示订单号的值
+        $.ajax
+            ({
+                type: "POST",
+                url: "/ReserveRecord/DelReserve",
+                async: true,
+                data: { RoomNumber: RoomNumber},
+                success: function (data) {
+                    if (data = "success") {
+                        setTimeout("location.reload()", 3000);
+                        layer.alert('取消预定失败，请重新操作', { icon: 2, skin: 'layer-ext-moon' });
+                    }
+                },
+                error: function (request) {
+                    setTimeout("location.reload()", 3000);                  
+                    layer.alert('取消预定成功，如还需要预定请前往预定房间', { icon: 1, skin: 'layer-ext-moon' });
+                },
+            });
+    }
+</script>
